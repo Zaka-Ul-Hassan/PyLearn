@@ -31,8 +31,7 @@ async def chrome_devtools_json():
 
 @router.get("/", response_class=HTMLResponse)
 def show_login(request: Request):
-    return templates.TemplateResponse("user/login.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "user/login.html", {
         "hide_navbar": True,
         "hide_footer": True,
         "fullscreen": True,
@@ -42,8 +41,7 @@ def show_login(request: Request):
 
 @router.get("/register")
 def show_register_form(request: Request):
-    return templates.TemplateResponse("user/register.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "user/register.html", {
         "hide_navbar": True,
         "hide_footer": True,
         "fullscreen": True,
@@ -71,8 +69,7 @@ def show_dashboard(
         "Image": None
     }
     
-    return templates.TemplateResponse("shared/dashboard/dashboard.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "shared/dashboard/dashboard.html", {
         "user": minimal_user,
         "hide_resume": True
     })
@@ -94,8 +91,7 @@ async def upload_resume(
         "Image": None
     }
     
-    return templates.TemplateResponse("resume/resume-upload.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "resume/resume-upload.html", {
         "user": minimal_user,
         "hide_resume": False
     })
@@ -118,8 +114,7 @@ async def job_list_page(
         "Image": None
     }
     
-    return templates.TemplateResponse("job/list.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "job/list.html", {
         "user": minimal_user,
         "resume_id": None,
         "hide_resume": True,
@@ -140,16 +135,14 @@ async def linkedin_job_page(
         "Image": None
     }
 
-    return templates.TemplateResponse("job/linkedin_job.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "job/linkedin_job.html", {
         "user": minimal_user,
         "hide_resume": True,
     })
 
 @router.get("/forgot-password", response_class=HTMLResponse)
 def forgot_password(request: Request):
-    return templates.TemplateResponse("user/forgot_password.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "user/forgot_password.html", {
         "hide_navbar": True,
         "hide_footer": True,
         "fullscreen": True,
@@ -158,8 +151,7 @@ def forgot_password(request: Request):
 
 @router.get("/reset-request-sent", response_class=HTMLResponse)
 def reset_request_sent(request: Request, email: str):
-    return templates.TemplateResponse("user/reset_request_sent.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "user/reset_request_sent.html", {
         "email": email,
         "hide_navbar": True,
         "hide_footer": True,
@@ -189,9 +181,9 @@ async def user_management_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "user/user_management.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -200,9 +192,9 @@ async def user_management_page(
 @router.get("/user/reset-password", response_class=HTMLResponse)
 def reset_password_form(request: Request, token: str = Query(...)):
     return templates.TemplateResponse(
+        request,
         "user/reset_password.html",
         {
-            "request": request,
             "token": token,
             "hide_navbar": True,
             "hide_footer": True,
@@ -214,9 +206,9 @@ def reset_password_form(request: Request, token: str = Query(...)):
 @router.get("/user/set-password", response_class=HTMLResponse)
 def set_password_form(request: Request, token: str = Query(...)):
     return templates.TemplateResponse(
+        request,
         "user/set_password.html",
         {
-            "request": request,
             "token": token,
             "hide_navbar": True,
             "hide_footer": True,
@@ -246,9 +238,9 @@ async def update_profile_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "user/update_profile.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -276,9 +268,9 @@ async def change_password_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "user/change_password.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -303,8 +295,7 @@ def profile_page(
 
     resume = db.query(Resume).filter(Resume.UserId == user_id, Resume.IsDeleted == False).first()
 
-    return templates.TemplateResponse("profile/edit_profile.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "profile/edit_profile.html", {
         "user": current_user,
         "resume": resume
     })
@@ -330,9 +321,9 @@ async def email_settings_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "email/email_settings.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -358,9 +349,9 @@ async def compose_email_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "email/compose_email.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -386,9 +377,9 @@ async def sent_email_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "email/sent_email.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -414,9 +405,9 @@ async def inbox_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "email/email_inbox.html",
         {
-            "request": request,
             "user": minimal_user,
             "hide_resume": True
         }
@@ -449,9 +440,9 @@ async def resume_list_page(
     ).order_by(Resume.CreatedAt.desc()).all()
 
     return templates.TemplateResponse(
+        request,
         "resume/resume_list.html",
         {
-            "request": request,
             "user": minimal_user,
             "resumes": resumes,
             "hide_resume": False
@@ -477,9 +468,9 @@ async def resume_rag_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "resume/resume_rag.html",
         {
-            "request": request,
             "user": minimal_user
         }
     )
@@ -503,9 +494,9 @@ async def resume_manage_page(
     }
     
     return templates.TemplateResponse(
+        request,
         "resume/resume_crud.html",
         {
-            "request": request,
             "user": minimal_user
         }
     )
@@ -598,8 +589,7 @@ def view_resume_page(
 
     resume = db.query(Resume).filter(Resume.UserId == user_id, Resume.IsDeleted == False).first()
 
-    return templates.TemplateResponse("resume/get_resume.html", {
-        "request": request,
+    return templates.TemplateResponse(request, "resume/get_resume.html", {
         "user": current_user,
         "resume": resume
     })
